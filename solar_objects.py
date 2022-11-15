@@ -8,38 +8,15 @@ class Star:
     а также визуальный радиус звезды в пикселах и её цвет.
     """
 
-    type = "star"
-    """Признак объекта звезды"""
-
-    m = 0
-    """Масса звезды"""
-
-    x = 0
-    """Координата по оси **x**"""
-
-    y = 0
-    """Координата по оси **y**"""
-
-    Vx = 0
-    """Скорость по оси **x**"""
-
-    Vy = 0
-    """Скорость по оси **y**"""
-
-    Fx = 0
-    """Сила по оси **x**"""
-
-    Fy = 0
-    """Сила по оси **y**"""
-
-    R = 5
-    """Радиус звезды"""
-
-    color = "red"
-    """Цвет звезды"""
-
-    image = None
-    """Изображение звезды"""
+    def __init__(self, radius, color, mass, r, V):
+        self.radius = radius
+        self.color = color
+        self.mass = mass
+        self.r = r
+        self.V = V
+        self.F = 0
+        self.image = None
+        self.type = "star"
 
 
 class Planet:
@@ -48,35 +25,12 @@ class Planet:
     а также визуальный радиус планеты в пикселах и её цвет
     """
 
-    type = "planet"
-    """Признак объекта планеты"""
-
-    m = 0
-    """Масса планеты"""
-
-    x = 0
-    """Координата по оси **x**"""
-
-    y = 0
-    """Координата по оси **y**"""
-
-    Vx = 0
-    """Скорость по оси **x**"""
-
-    Vy = 0
-    """Скорость по оси **y**"""
-
-    Fx = 0
-    """Сила по оси **x**"""
-
-    Fy = 0
-    """Сила по оси **y**"""
-
-    R = 5
-    """Радиус планеты"""
-
-    color = "green"
-    """Цвет планеты"""
-
-    image = None
-    """Изображение планеты"""
+    def __init__(self, radius, color, mass, r, V):
+        self.radius = radius
+        self.color = color
+        self.mass = mass
+        self.r = r
+        self.V = V
+        self.F = 0
+        self.image = None
+        self.type = "planet"
