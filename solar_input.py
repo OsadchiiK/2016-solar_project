@@ -1,7 +1,8 @@
 # coding: utf-8
 # license: GPLv3
 
-from solar_objects import Star, Planet
+from solar_objects import Star, Planet  # planet is unused. why?
+import numpy as np
 
 
 def read_space_objects_data_from_file(input_filename):
@@ -43,8 +44,13 @@ def parse_star_parameters(line, star):
     **line** — строка с описание звезды.
     **star** — объект звезды.
     """
+    raduis = float(line[1])
+    color = line[2]
+    mass = float(line[3])
+    r = np.array([float(line[4]), float(line[5])])
+    V = np.array([float(line[6]), float(line[7])])
+    return Star(raduis, color, mass, r, V)
 
-    pass  # FIXME: not done yet
 
 def parse_planet_parameters(line, planet):
     """Считывает данные о планете из строки.
@@ -61,7 +67,12 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    pass  # FIXME: not done yet...
+    raduis = float(line[1])
+    color = line[2]
+    mass = float(line[3])
+    r = np.array([float(line[4]), float(line[5])])
+    V = np.array([float(line[6]), float(line[7])])
+    return Planet(raduis, color, mass, r, V)
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
