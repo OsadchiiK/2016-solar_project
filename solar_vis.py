@@ -28,7 +28,7 @@ def calculate_scale_factor(max_distance):
     print('Scale factor:', scale_factor)
 
 
-def scale_x(x):
+def scale_r(r):
     """Возвращает экранную **x** координату по **x** координате модели.
     Принимает вещественное число, возвращает целое число.
     В случае выхода **x** координаты за пределы экрана возвращает
@@ -38,23 +38,10 @@ def scale_x(x):
 
     **x** — x-координата модели.
     """
-
-    return int(x*scale_factor) + window_width//2
-
-
-def scale_y(y):
-    """Возвращает экранную **y** координату по **y** координате модели.
-    Принимает вещественное число, возвращает целое число.
-    В случае выхода **y** координаты за пределы экрана возвращает
-    координату, лежащую за пределами холста.
-    Направление оси развёрнуто, чтобы у модели ось **y** смотрела вверх.
-
-    Параметры:
-
-    **y** — y-координата модели.
-    """
-
-    return int(y*scale_factor) + window_height//2
+    scale_r = r*scale_factor
+    scale_r = scale_r.astype("int64")
+    scale_r += window_width//2
+    return scale_r
 
 
 def create_star_image(space, star):
@@ -66,10 +53,10 @@ def create_star_image(space, star):
     **star** — объект звезды.
     """
 
-    x = scale_x(star.x)
-    y = scale_y(star.y)
-    r = star.R
-    star.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=star.color)
+    radius_vector = scale_r(star.r)
+    r = star.radius
+    print(radius_vector)
+    star.image = space.create_oval(radius_vector - r, radius_vector + r, fill=star.color)
 
 
 def create_planet_image(space, planet):
@@ -80,10 +67,13 @@ def create_planet_image(space, planet):
     **space** — холст для рисования.
     **planet** — объект планеты.
     """
-    x = scale_x(planet.x)
-    y = scale_y(planet.y)
-    r = planet.R
-    planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
+    radius_vector = scale_r(planet.r)
+    r = planet.radius
+    print(raduis_vector)
+    planet.image = space.create_oval(
+        list(radius_vector - r),
+        list(radius_vector + r),
+        fill=planet.color)
 
 
 def update_system_name(space, system_name):
@@ -106,9 +96,10 @@ def update_object_position(space, body):
     **space** — холст для рисования.
     **body** — тело, которое нужно переместить.
     """
-    x = scale_x(body.x)
-    y = scale_y(body.y)
-    r = body.R
+    radius_vector = scale_r(body.r)
+    r = body.radius
+    x = radius_vector[0]
+    y = radius_vector[1]
     if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
         space.coords(body.image, window_width + r, window_height + r,
                      window_width + 2*r, window_height + 2*r)  # положить за пределы окна
