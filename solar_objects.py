@@ -1,5 +1,6 @@
 # coding: utf-8
 # license: GPLv3
+import pygame
 
 
 class Star:
@@ -18,6 +19,14 @@ class Star:
         self.image = None
         self.type = "star"
 
+    def draw(self, screen):
+        pygame.draw.circle(
+            screen,
+            self.color,
+            self.r,
+            self.radius
+        )
+
 
 class Planet:
     """Тип данных, описывающий планету.
@@ -34,3 +43,11 @@ class Planet:
         self.F = 0
         self.image = None
         self.type = "planet"
+
+    def draw(self, screen):
+        pygame.draw.circle(
+            screen,
+            self.color,
+            self.r,
+            self.radius
+        )

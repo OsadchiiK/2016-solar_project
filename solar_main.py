@@ -2,6 +2,7 @@
 # license: GPLv3
 
 import pygame
+import time
 from solar_vis import *
 from solar_model import *
 from solar_input import *
@@ -36,7 +37,7 @@ def execution(dt):
     вызов самой себя по таймеру через от 1 мс до 100 мс.
     """
     global physical_time
-    recalculate_space_objects_positions([dr.obj for dr in space_objects], dt)
+    recalculate_space_objects_positions(space_objects, dt)
     physical_time += dt
 
 
@@ -61,7 +62,7 @@ def open_file():
     global space_objects
     in_filename = "solar_system.txt"
     space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
+    max_distance = max([max(abs(obj.r[0]), abs(obj.r[1])) for obj in space_objects])
     calculate_scale_factor(max_distance)
 
 
@@ -95,11 +96,11 @@ def init_ui():
         ])
     reaction1 = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
                                 reac_func=slider_reaction,
-                                event_args={"id":thorpy.constants.EVENT_SLIDE}
+                                event_args={"id": thorpy.constants.EVENT_SLIDE}
                                 )
     box.add_reaction(reaction1)
     menu = thorpy.Menu(box)
-    box.set_topleft((0,680))
+    box.set_topleft((0, 680))
     box.blit()
     box.update()
     return menu, box
@@ -113,7 +114,7 @@ def main():
     screen = pygame.display.set_mode((window_width, window_height))
     last_time = time.perf_counter()
     drawer = Drawer(screen)
-    menu, box= init_ui()
+    menu, box = init_ui()
     perform_execution = True
 
     while not finished:
@@ -123,8 +124,9 @@ def main():
             execution((current_time - last_time) * time_scale)
         last_time = current_time
         drawer.update(space_objects, box)
-        
+
     print('Modelling finished!')
+
 
 if __name__ == "__main__":
     main()

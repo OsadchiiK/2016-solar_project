@@ -1,12 +1,14 @@
 # coding: utf-8
 # license: GPLv3
 
-import pygame 
+import pygame
 from pygame.draw import *
+import numpy as np
 
 """Модуль визуализации.
 Нигде, кроме этого модуля, не используются экранные координаты объектов.
-Функции, создающие гaрафические объекты и перемещающие их на экране, принимают физические координаты
+Функции, создающие гaрафические объекты и перемещающие их на экране, принимают
+физические координаты
 """
 
 header_font = "Arial-16"
@@ -27,39 +29,19 @@ scale_factor = 1
 
 
 def calculate_scale_factor(max_distance):
-    """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
+    """Вычисляет значение глобальной переменной **scale_factor** по данной
+характерной длине"""
     global scale_factor
     scale_factor = 0.4*min(window_height, window_width)/max_distance
     print('Scale factor:', scale_factor)
 
 
-def scale_x(x):
-    """Возвращает экранную **x** координату по **x** координате модели.
-    Принимает вещественное число, возвращает целое число.
-    В случае выхода **x** координаты за пределы экрана возвращает
-    координату, лежащую за пределами холста.
-
-    Параметры:
-
-    **x** — x-координата модели.
-    """
-
-    return int(x*scale_factor) + window_width//2
-
-
-def scale_y(y):
-    """Возвращает экранную **y** координату по **y** координате модели.
-    Принимает вещественное число, возвращает целое число.
-    В случае выхода **y** координаты за пределы экрана возвращает
-    координату, лежащую за пределами холста.
-    Направление оси развёрнуто, чтобы у модели ось **y** смотрела вверх.
-
-    Параметры:
-
-    **y** — y-координата модели.
-    """
-
-    return int(-y*scale_factor) + window_height//2
+def scale_r(rad_v):
+    r = rad_v.copy()
+    r *= scale_factor
+    r *= np.array([1, -1])
+    r += np.array([window_width//2, window_height//2])
+    return r.astype("int64")
 
 
 if __name__ == "__main__":
@@ -73,7 +55,7 @@ class Drawer:
     def update(self, figures, ui):
         self.screen.fill((0, 0, 0))
         for figure in figures:
-            figure.draw(self.screen)
+            DrawObject(figure).draw(self.screen)
         ui.blit()
         ui.update()
         pygame.display.update()
@@ -85,4 +67,8 @@ class DrawObject:
 
     def draw(self, surface):
         object_ = self.obj
-        circle(surface, object_.color, (scale_x(object_.x), scale_y(object_.y)), object_.R)
+        circle(
+            surface,
+            object_.color,
+            tuple(scale_r(object_.r)),
+            object_.radius)

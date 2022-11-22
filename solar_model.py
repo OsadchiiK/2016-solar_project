@@ -14,17 +14,15 @@ def calculate_force(body, space_objects):
     **body** — тело, для которого нужно вычислить дейстующую силу.
     **space_objects** — список объектов, которые воздействуют на тело.
     """
-
     body.F = np.zeros(2)
     M = body.mass
     for obj in space_objects:
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
-        for planet in space_objects:
-            displacement = planet.r - body.r
-            m = planet.mass
-            distance = np.linalg.norm(displacement)
-            body.F += (M*m / distance**3) * displacement
+        displacement = obj.r - body.r
+        m = obj.mass
+        distance = np.linalg.norm(displacement)
+        body.F += gravitational_constant*(M*m / distance**3) * displacement
 
 
 def move_space_object(body, dt):
@@ -34,11 +32,9 @@ def move_space_object(body, dt):
 
     **body** — тело, которое нужно переместить.
     """
-
-    a = body.F/body.m
-    body.r += body.V * dt  # FIXME: не понимаю как менять...
+    a = body.F/body.mass
+    body.r += body.V * dt
     body.V += a*dt
-    # FIXME: not done recalculation of y coordinate!
 
 
 def recalculate_space_objects_positions(space_objects, dt):
@@ -46,7 +42,8 @@ def recalculate_space_objects_positions(space_objects, dt):
 
     Параметры:
 
-    **space_objects** — список оьъектов, для которых нужно пересчитать координаты.
+    **space_objects** — список оьъектов, для которых нужно пересчитать
+    координаты.
     **dt** — шаг по времени
     """
 
