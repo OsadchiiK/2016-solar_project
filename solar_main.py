@@ -26,7 +26,7 @@ space_objects = []
 """Список космических объектов."""
 
 
-def execution(delta):
+def execution(dt):
     """Функция исполнения -- выполняется циклически,
     вызывая обработку всех небесных тел,
     а также обновляя их положение на экране.
@@ -36,8 +36,8 @@ def execution(delta):
     вызов самой себя по таймеру через от 1 мс до 100 мс.
     """
     global physical_time
-    recalculate_space_objects_positions([dr.obj for dr in space_objects], delta)
-    physical_time += delta
+    recalculate_space_objects_positions([dr.obj for dr in space_objects], dt)
+    physical_time += dt
 
 
 def start_execution():
