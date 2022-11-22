@@ -28,7 +28,6 @@ def read_space_objects_data_from_file(input_filename):
                 objects.append(planet)
             else:
                 print("Unknown space object")
-
     return objects
 
 
