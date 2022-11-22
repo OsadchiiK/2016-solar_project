@@ -67,7 +67,7 @@ def open_file():
 
 
 def save_file():
-    write_space_objects_data_to_file(output_filename, space_objects)
+    write_space_objects_data_to_file("output.txt", space_objects)
 
 
 def events(events, menu):
